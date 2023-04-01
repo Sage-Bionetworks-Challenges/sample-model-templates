@@ -15,9 +15,13 @@ provide examples in Python and R.
 
 3. (optional) Locally run the script to ensure it can run successfully.  
 
-    The sample scripts are written in a way so that you can adjust the values of 
-    `input_dir` and `output_dir`. That is, `input_dir` and `output_dir` does not 
-    always have to be `/input` and `/output`, respectively. For example:
+    The sample scripts have been written so that the input and output files
+    are not hard-coded in `/input` and `/output`, respectively.  This way, you
+    can more easily test your changes without having to create these directories.
+
+    For example, the following indicates that the input files are available in
+    `sample_data/`, while the output file, `predictions.csv`, will be written to
+    the current working directory (`.`):
 
     ```
     python run_model.py --input-dir sample_data/ --output-dir .
