@@ -45,11 +45,11 @@ provide examples in Python and R.
 
     ```
     docker run \
-    --rm \
-    --network none \
-    --volume $PWD/sample_data:/input:ro \
-    --volume $PWD/output:/output:rw \
-    docker.synapse.org/<project id>/my-model:v1
+        --rm \
+        --network none \
+        --volume $PWD/sample_data:/input:ro \
+        --volume $PWD/output:/output:rw \
+        docker.synapse.org/<project id>/my-model:v1
     ```
 
 > **Note** if your model requires a GPU, be sure to expose it with `--runtime nvidia`
