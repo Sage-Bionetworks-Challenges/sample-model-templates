@@ -17,11 +17,10 @@ provide examples in Python and R.
 
     The sample scripts have been written so that the input and output files
     are not hard-coded in `/input` and `/output`, respectively.  This way, you
-    can more easily test your changes without having to create these directories.
-
-    For example, the following indicates that the input files are available in
-    `sample_data/`, while the output file, `predictions.csv`, will be written to
-    the current working directory (`.`):
+    can test your changes without having to create these directories. For
+    example, the following indicates that the input files are available in
+    `sample_data/`, while the output file, `predictions.csv`, will be written
+    to the current working directory (`.`):
 
     ```
     python run_model.py --input-dir sample_data/ --output-dir .
@@ -29,7 +28,7 @@ provide examples in Python and R.
 
 ## Build your model
 
-1. Dockerize your model:
+1. Dockerize your model (assuming you are either in `r/` or `python/`):
 
     ```
     docker build -t docker.synapse.org/<project id>/my-model:v1 .
