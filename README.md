@@ -44,10 +44,12 @@ provide examples in Python and R.
     docker run \
     --rm \
     --network none \
-    -v $PWD/sample_data:/input:ro \
-    -v $PWD/output:/output:rw \
+    --volume $PWD/sample_data:/input:ro \
+    --volume $PWD/output:/output:rw \
     docker.synapse.org/<project id>/my-model:v1
     ```
+
+> **Note** if your model requires a GPU, be sure to expose it with `--runtime nvidia`
 
 ## Prepare your submission
 
