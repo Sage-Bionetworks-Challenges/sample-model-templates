@@ -4,8 +4,8 @@ provide examples in Python and R.
 
 ### Requirements
 * Python or R
-* [Docker](https://docs.docker.com/get-docker/)
-* [Synapse account](https://www.synapse.org/#)
+* [Docker]
+* [Synapse account]
 
 ## Write your algorithm
 
@@ -56,18 +56,25 @@ provide examples in Python and R.
 
 ## Prepare your submission
 
-1. If you haven't already, log into the Synapse Docker registry with your Synapse credentials.
-You should only need to do this step once, assuming you do not switch Docker registries.
+1. If you haven't already, log into the Synapse Docker registry with your Synapse
+    credentials. We highly recommend you use a Synapse Personal Access Token (PAT)
+    for this step. Once logged in, you should not have to log in again, unless you
+    log out or switch Docker registries.
 
     ```
-    docker login docker.synapse.org
+    docker login docker.synapse.org --username <syn_username>
     ```
 
-    You can also log in non-interactively through `STDIN` - this will prevent
-    your password from being saved in the shell's history and log files:
+    When prompted for a password, enter your PAT.
+
+    > [Learn more about Synapse PATs and how to generate one].
+
+    You can also log in non-interactively through `STDIN` - this will prevent your
+    password from being saved in the shell's history and log files. For example, if
+    you saved your PAT into a file called `synapse.token`:
 
     ```
-    cat ~/syn_password.txt | \
+    cat ~/synapse.token | \
       docker login docker.synapse.org --username <syn_username> --password-stdin
     ```
 
@@ -78,3 +85,8 @@ You should only need to do this step once, assuming you do not switch Docker reg
     ```
 
 3. The Docker image should now be available in the **Docker** tab of your Synapse project.
+
+
+[Docker]: https://docs.docker.com/get-docker/
+[Synapse account]: https://www.synapse.org/#
+[Learn more about Synapse PATs and how to generate one]: https://help.synapse.org/docs/Managing-Your-Account.2055405596.html#ManagingYourAccount-PersonalAccessTokens
