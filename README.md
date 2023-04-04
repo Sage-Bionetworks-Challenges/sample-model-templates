@@ -11,7 +11,8 @@ provide examples in Python and R.
 
 1. Replace the code in the `run_model.*` script with your own algorithm(s).
 
-2. Update `requirements.txt` with any additional libraries/packages used.
+2. (If using Python) Update `requirements.txt` with any additional libraries/packages used
+    by your script(s).
 
 3. (optional) Locally run the script to ensure it can run successfully.  
 
@@ -28,7 +29,12 @@ provide examples in Python and R.
 
 ## Build your model
 
-1. Dockerize your model (assuming you are either in `r/` or `python/`):
+1. (If using R) Update the Dockerfile with any additional packages used by your script(s).
+
+> **Note** All Docker submissions are run without network access, so you must install all
+> needed dependencies during this step (image building) rather than during the container run.
+
+2. Dockerize your model (assuming you are either in `r/` or `python/`):
 
     ```
     docker build -t docker.synapse.org/<project id>/my-model:v1 .
@@ -41,7 +47,7 @@ provide examples in Python and R.
     * `v1`: version of your model
     * `.`: filepath to the Dockerfile
 
-2. (optional but recommended) Locally run the model to ensure it can run successfully:
+3. (optional but recommended) Locally run the model to ensure it can run successfully:
 
     ```
     docker run \
