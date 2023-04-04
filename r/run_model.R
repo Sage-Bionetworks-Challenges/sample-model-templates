@@ -18,7 +18,7 @@ data <- read_csv(file.path(opt$input_dir, "names.csv"), col_types = "c")
 
 # Run a prediction --------------------------------
 # Full name only contains two names.
-predictions <- extract(data, name, into=c("name", "first", "last"), "((.*?) (.*))")
+predictions <- extract(data, name, into = c("name", "first", "last"), regex = "((.*?) (.*))")
 
 
 # Output predictions to output file ---------------
