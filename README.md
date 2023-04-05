@@ -1,20 +1,23 @@
-# Sample Templates for Docker Submissions
-Sample templates for creating a Docker model submission on Synapse. We currently
-provide examples in Python and R.
+<h1 align="center">
+    Docker Model Templates
+</h1>
+<h3 align="center">
+    Templates for creating a Docker model submission on Synapse.
+</h3>
+
+You can either fork this repository or use this respository as reference to
+build your model from scratch.  We have provided a sample model template for
+both R and Python.
 
 ### Requirements
 * Python or R
 * [Docker](https://docs.docker.com/get-docker/)
 * [Synapse account](https://www.synapse.org/#)
+* Synapse project for the challenge
 
-## Setup
+---
 
-You can either fork this repository or use this respository as reference to
-build your model from scratch.  We have provided a sample directory structure
-for both R and Python.
-
-
-## 1. Write your algorithm
+## Write your algorithm(s)
 
 1. Replace the code in the `run_model.*` script with your own algorithm(s).
     You can create additional scripts for modularization/better organization
@@ -26,12 +29,13 @@ for both R and Python.
 3. (optional) Locally run `run_model.*` to ensure it can run successfully.
 
     These scripts have been written so that the input and output files are not
-    hard-coded in `/input` and `/output`, respectively (though `/input` and
-    `/output` are used as default).  This way, you can test your changes using
-    any directories as input and/or output.
+    hard-coded in the `/input` and `/output` directories, respectively (though
+    they are used by default).  This way, you can test your changes using any
+    directories as input and/or output.
 
-    For example, the following indicates that the input files are in `sample_data/`,
-    while the output file should be written to the current working directory (`.`):
+    For example, the following indicates that the input files are in
+    `sample_data/`, while the output file should be written to the current
+    working directory (`.`):
 
     **Python**
     ```
@@ -43,27 +47,37 @@ for both R and Python.
     Rscript run_model.R --input-dir ../sample_data/ --output-dir .
     ```
 
-## 2. Update the Dockerfile
+## Update the Dockerfile
 
-1. (If using R) Update the Dockerfile with any additional packages used by your
-    script(s).
+* (If using R) Add any additional packages used by your script(s) to the
+installation step.
 
-> **Note** All Docker submissions will be run without network access, so you
-> must install all needed dependencies here in the Dockerfile rather than in
-> your Rscripts.
+    > **Note** All Docker submissions will be run without network access, so
+    > you must install all needed dependencies here in the Dockerfile rather
+    > than in your Rscripts.
 
-2. `COPY` over any additional files required by your model. To help speed up
-    the build time, we recommend `COPY`ing over each file individually.
+* `COPY` over any additional files required by your model. We recommend using
+one `COPY` command per file, as this can help speed up build time.
 
-Note that the order in which you write Dockerfile commands **do matter**. Docker
-provides a handy build-caching feature to help speed up build time, by reusing
-previously built layers.  Therefore, it's often a good idea to put frequently-changing
-parts (such as `run_model.*`) near the end of the Dockerfile, as once one step
-needs to be rebuilt, all subsequent steps will also be rebuilt.
+* Feel free to update the base image and/or tag version if the provided base
+image do not fulfill your needs. Although you can use any valid image as the
+base, we recommend using one of the [Trusted Content images], especially if
+you are new to Docker. Images to consider:
+    * ubuntu
+    * bitnami/pytorch
+    * python
+    * r-base
 
-> [Learn more about Docker's build cache].
+* If your image takes some time to build, look at the order of your Dockerfile
+commands -- **the order matters**.  To best take advantage of Docker's
+build-caching (that is, reusing previously built layers), it's often a good
+idea to put frequently-changing parts (such as `run_model.*py*`) near the end
+of the Dockerfile. The way build-caching works is that once as one step needs
+to be rebuilt, all subsequent steps will also be rebuilt.
 
-## 3. Build your model
+    > [Learn more about Docker's build cache].
+
+## Build your model
 
 1. Assuming you are either in `r/` or `python/`, Dockerize your model:
 
@@ -80,8 +94,8 @@ needs to be rebuilt, all subsequent steps will also be rebuilt.
 
     Update the model name and/or tag name as desired.
 
-3. (optional but highly recommended) Locally run the model to ensure it can run
-    successfully:
+2. (optional but highly recommended) Locally run a container to ensure the
+    model can run successfully:
 
     ```
     docker run \
@@ -91,10 +105,22 @@ needs to be rebuilt, all subsequent steps will also be rebuilt.
         --volume $PWD/output:/output:rw \
         docker.synapse.org/<project id>/my-model:v1
     ```
+    
+    where:
 
-> **Note** if your model requires a GPU, be sure to expose it with `--runtime nvidia`
+    * `--rm`: stops and removes the container once it is done running
+    * `--network none`: disables all network connections to the container
+        (emulating the same behavior seen in the submission queues)
+    * `--volume ...`: mounts data generated by and used by the container. For
+        example, `--volume $PWD/sample_data:/input:ro` will mount
+        `$PWD/sample_data` (from your machine) as `/input` (in the container)
+        with read-only permissions.
+    * `docker.synapse.org/<project id>/my-model:v1`: Docker image and tag
+        version to run
 
-## 4. Prepare your submission
+    If your model requires a GPU, be sure to expose it by adding `--runtime nvidia`
+
+## Prepare and submit your model
 
 1. If you haven't already, log into the Synapse Docker registry with your
     Synapse credentials. We highly recommend you use a Synapse Personal Access
@@ -124,11 +150,18 @@ needs to be rebuilt, all subsequent steps will also be rebuilt.
     docker push docker.synapse.org/<project id>/my-model:v1
     ```
 
-3. The Docker image should now be available in the **Docker** tab of your
+    The Docker image should now be available in the **Docker** tab of your
     Synapse project.
+
+3. To submit, navigate to the recently pushed image in your Synapse project and
+    click on the **Docker Repository Tools** button in the upper-right corner.
+    Select **Submit Docker Repository to Challenge** from the list of options,
+    then follow the prompts.
+
 
 
 [Docker]: https://docs.docker.com/get-docker/
 [Synapse account]: https://www.synapse.org/#
+[Trusted Content images]: https://hub.docker.com/search?q=&image_filter=official%2Cstore
 [Learn more about Docker's build cache]: https://docs.docker.com/build/cache/
 [Learn more about Synapse PATs and how to generate one]: https://help.synapse.org/docs/Managing-Your-Account.2055405596.html#ManagingYourAccount-PersonalAccessTokens
