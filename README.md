@@ -17,7 +17,7 @@ both R and Python.
 
 ---
 
-## Write your algorithm(s)
+### Write your algorithm(s)
 
 1. Replace the code in the `run_model.*` script with your own algorithm(s).
     You can create additional scripts for modularization/better organization
@@ -47,7 +47,7 @@ both R and Python.
     Rscript run_model.R --input-dir ../sample_data/ --output-dir .
     ```
 
-## Update the Dockerfile
+### Update the Dockerfile
 
 * (If using R) Add any additional packages used by your script(s) to the
 installation step.
@@ -71,13 +71,13 @@ you are new to Docker. Images to consider:
 * If your image takes some time to build, look at the order of your Dockerfile
 commands -- **the order matters**.  To best take advantage of Docker's
 build-caching (that is, reusing previously built layers), it's often a good
-idea to put frequently-changing parts (such as `run_model.*py*`) near the end
+idea to put frequently-changing parts (such as `run_model.*`) near the end
 of the Dockerfile. The way build-caching works is that once as one step needs
 to be rebuilt, all subsequent steps will also be rebuilt.
 
     > [Learn more about Docker's build cache].
 
-## Build your model
+### Build your model
 
 1. Assuming you are either in `r/` or `python/`, Dockerize your model:
 
@@ -120,7 +120,7 @@ to be rebuilt, all subsequent steps will also be rebuilt.
 
     If your model requires a GPU, be sure to expose it by adding `--runtime nvidia`
 
-## Prepare and submit your model
+### Prepare and submit your model
 
 1. If you haven't already, log into the Synapse Docker registry with your
     Synapse credentials. We highly recommend you use a Synapse Personal Access
@@ -156,7 +156,7 @@ to be rebuilt, all subsequent steps will also be rebuilt.
 3. To submit, navigate to the recently pushed image in your Synapse project and
     click on the **Docker Repository Tools** button in the upper-right corner.
     Select **Submit Docker Repository to Challenge** from the list of options,
-    then follow the prompts.
+    then follow the submission prompts.
 
 
 
