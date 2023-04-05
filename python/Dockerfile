@@ -11,12 +11,13 @@ WORKDIR /usr/local/bin
 # We recommend copying over each file individually, as to take
 # advantage of cache building (which helps reduce build time).
 COPY requirements.txt .
-COPY run_model.py .
 
 # Install needed libraries/packages.
 # Your model will be run without network access, so the dependencies
 # must be installed here (and not during code execution).
 RUN pip install -r requirements.txt
+
+COPY run_model.py .
 
 # Set the main command of the image.
 # We recommend using this form instead of `ENTRYPOINT command param1`.
