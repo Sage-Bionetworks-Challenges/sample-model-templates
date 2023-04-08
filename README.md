@@ -6,7 +6,8 @@
 </h3>
 
 You can either fork this repository or use it as reference to build your
-from scratch.  We have provided a sample model template for both R and Python.
+model from scratch.  We have provided a sample model template for both R and
+Python.
 
 ### Requirements
 * Python or R
