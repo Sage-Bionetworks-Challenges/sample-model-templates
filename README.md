@@ -64,9 +64,10 @@ image do not fulfill your needs. Although you can use any valid image as the
 base, we recommend using one of the [Trusted Content images], especially if
 you are new to Docker. Images to consider:
     * ubuntu
-    * bitnami/pytorch
     * python
+    * bitnami/pytorch
     * r-base
+    * rocker/tidyverse
 
 * If your image takes some time to build, look at the order of your Dockerfile
 commands -- **the order matters**.  To best take advantage of Docker's
