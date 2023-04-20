@@ -73,8 +73,8 @@ you are new to Docker. Images to consider:
 commands -- **the order matters**.  To best take advantage of Docker's
 build-caching (that is, reusing previously built layers), it's often a good
 idea to put frequently-changing parts (such as `run_model.*`) near the end
-of the Dockerfile. The way build-caching works is that once as one step needs
-to be rebuilt, all subsequent steps will also be rebuilt.
+of the Dockerfile. The way build-caching works is that once a step needs to
+be rebuilt, all of the subsequent steps will also be rebuilt.
 
     > [Learn more about Docker's build cache].
 
