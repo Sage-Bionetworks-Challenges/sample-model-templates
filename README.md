@@ -5,9 +5,9 @@
     Templates for creating a Docker model submission on Synapse.
 </h3>
 
-You can either fork this repository or use it as reference to build your
-model from scratch.  We have provided a sample model template for both R and
-Python.
+You can either build off of this repository template or use it as reference 
+to build your model from scratch.  We have provided a sample model template
+for both R and Python.
 
 ### Requirements
 * Python or R
