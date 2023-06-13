@@ -120,6 +120,8 @@ be rebuilt, all of the subsequent steps will also be rebuilt.
         version to run
 
     If your model requires a GPU, be sure to expose it by adding `--runtime nvidia`
+    or `--gpus all`. Note that your local machine will also need the
+    [NVIDIA Container Toolkit](https://github.com/NVIDIA/nvidia-docker).
 
 ### Prepare and submit your model
 
