@@ -23,8 +23,11 @@ for both R and Python.
     You can create additional scripts for modularization/better organization
     if desired.
 
-2. (If using Python) Update `requirements.txt` with any additional
+2. If using Python, update `requirements.txt` with any additional
     libraries/packages used by your script(s).
+
+    If using R, update `requirements.R` and add/remove any libraries/packages
+    listed in `pkg_list` that are used by your script(s).
 
 3. (optional) Locally run `run_model.*` to ensure it can run successfully.
 
@@ -49,12 +52,21 @@ for both R and Python.
 
 ### Update the Dockerfile
 
-* (If using R) Add any additional packages used by your script(s) to the
-installation step.
+* Again, make sure that all needed libraries/packages are specified in the 
+`requirements.*` file.  Because all Docker submissions are run without network
+access, you will not able to install anything during the container run. If
+you do not want to use a `requirements.*` file, you may run replace the RUN
+command with the following:
 
-    > **Note** All Docker submissions will be run without network access, so
-    > you must install all needed dependencies here in the Dockerfile rather
-    > than in your Rscripts.
+    **Python**
+    ```
+    RUN pip install pandas
+    ```
+
+    **R**
+    ```
+    RUN R -e "install.packages(c('optparse'), repos = 'http://cran.us.r-project.org')"
+    ```
 
 * `COPY` over any additional files required by your model. We recommend using
 one `COPY` command per file, as this can help speed up build time.

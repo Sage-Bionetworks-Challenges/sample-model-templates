@@ -7,14 +7,16 @@ FROM r-base:4.2.0
 # commands of the Dockerfile.
 WORKDIR /usr/local/bin
 
-# Install needed libraries/packages.
-# Your model will be run without network access, so the dependencies
-# must be installed here (and not during code execution).
-RUN R -e "install.packages(c('optparse', 'readr', 'tidyr'), repos = 'http://cran.us.r-project.org')"
-
 # Copy files over to the image.
 # We recommend copying over each file individually, as to take
 # advantage of cache building (which helps reduce build time).
+COPY requirements.R .
+
+# Install needed libraries/packages.
+# Your model will be run without network access, so the dependencies
+# must be installed here (and not during code execution).
+RUN Rscript requirements.R
+
 COPY run_model.R .
 
 # Set the main command of the image.
