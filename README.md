@@ -107,7 +107,9 @@ be rebuilt, all of the subsequent steps will also be rebuilt.
 
     Update the model name and/or tag name as desired.
 
-2. (optional but highly recommended) Locally run a container to ensure the
+    > **Note**: the submission system uses the x86-64 cpu architecture. If your machine uses a different architecture, e.g. Apple Silicon, you will need to additionally include `--platform linux/amd64` into the build command.
+
+3. (optional but highly recommended) Locally run a container to ensure the
     model can run successfully:
 
     ```
