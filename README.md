@@ -140,7 +140,7 @@ be rebuilt, all of the subsequent steps will also be rebuilt.
     or `--gpus all`. Note that your local machine will also need the
     [NVIDIA Container Toolkit](https://github.com/NVIDIA/nvidia-docker).
 
-### Prepare and submit your model
+### Prepare and push your model to Synapse
 
 1. If you haven't already, log into the Synapse Docker registry with your
     Synapse credentials. We highly recommend you use a Synapse Personal Access
@@ -172,11 +172,6 @@ be rebuilt, all of the subsequent steps will also be rebuilt.
 
     The Docker image should now be available in the **Docker** tab of your
     Synapse project.
-
-3. To submit, navigate to the recently pushed image in your Synapse project and
-    click on the **Docker Repository Tools** button in the upper-right corner.
-    Select **Submit Docker Repository to Challenge** from the list of options,
-    then follow the submission prompts.
 
 
 
