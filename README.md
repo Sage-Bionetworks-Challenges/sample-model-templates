@@ -95,12 +95,12 @@ be rebuilt, all of the subsequent steps will also be rebuilt.
 1. Assuming you are either in `r/` or `python/`, Dockerize your model:
 
     ```
-    docker build -t docker.synapse.org/<project id>/my-model:v1 .
+    docker build -t docker.synapse.org/PROJECT_ID/my-model:v1 .
     ```
 
     where:
 
-    * `<project id>`: Synapse ID of your project
+    * `PROJECT_ID`: Synapse ID of your project
     * `my-model`: name of your model
     * `v1`: version of your model
     * `.`: filepath to the Dockerfile
@@ -110,7 +110,7 @@ be rebuilt, all of the subsequent steps will also be rebuilt.
 > [!IMPORTANT]
 > The submission system uses the x86-64 cpu architecture. If your machine uses a different architecture, e.g. Apple Silicon, you will need to additionally include `--platform linux/amd64` into the command, e.g.
 > 
-> `docker build -t <image name> --platform linux/amd64 <filepath to Dockerfile>`
+> `docker build -t IMAGE_NAME --platform linux/amd64 FILEPATH_TO_DOCKERFILE`
 
 3. (optional but highly recommended) Locally run a container to ensure the
     model can run successfully:
@@ -121,7 +121,7 @@ be rebuilt, all of the subsequent steps will also be rebuilt.
         --network none \
         --volume $PWD/sample_data:/input:ro \
         --volume $PWD/output:/output:rw \
-        docker.synapse.org/<project id>/my-model:v1
+        docker.synapse.org/PROJECT_ID/my-model:v1
     ```
     
     where:
@@ -133,12 +133,12 @@ be rebuilt, all of the subsequent steps will also be rebuilt.
         example, `--volume $PWD/sample_data:/input:ro` will mount
         `$PWD/sample_data` (from your machine) as `/input` (in the container)
         with read-only permissions.
-    * `docker.synapse.org/<project id>/my-model:v1`: Docker image and tag
+    * `docker.synapse.org/PROJECT_ID/my-model:v1`: Docker image and tag
         version to run
 
     If your model requires a GPU, be sure to expose it by adding `--runtime nvidia`
-    or `--gpus all`. Note that your local machine will also need the
-    [NVIDIA Container Toolkit](https://github.com/NVIDIA/nvidia-docker).
+    or `--gpus all` to the `docker run` command. Note that your local machine will
+    also need the [NVIDIA Container Toolkit](https://github.com/NVIDIA/nvidia-docker).
 
 ### Prepare and push your model to Synapse
 
@@ -148,7 +148,7 @@ be rebuilt, all of the subsequent steps will also be rebuilt.
     again, unless you log out or switch Docker registries.
 
     ```
-    docker login docker.synapse.org --username <syn_username>
+    docker login docker.synapse.org --username SYNAPSE_USERNAME
     ```
 
     When prompted for a password, enter your PAT.
@@ -161,13 +161,13 @@ be rebuilt, all of the subsequent steps will also be rebuilt.
 
     ```
     cat ~/synapse.token | \
-      docker login docker.synapse.org --username <syn_username> --password-stdin
+      docker login docker.synapse.org --username SYNAPSE_USERNAME --password-stdin
     ```
 
 2. Use `docker push` to push the model up to your project on Synapse.
 
     ```
-    docker push docker.synapse.org/<project id>/my-model:v1
+    docker push docker.synapse.org/PROJECT_ID/my-model:v1
     ```
 
     The Docker image should now be available in the **Docker** tab of your
