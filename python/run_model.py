@@ -1,8 +1,9 @@
 """Python Model Example"""
 import os
 
-import typer
 import pandas as pd
+import typer
+from typing_extensions import Annotated
 
 
 def predict(df):
@@ -13,8 +14,8 @@ def predict(df):
     return df
 
 
-def main(input_dir: str = '/input',
-         output_dir: str = '/output'):
+def main(input_dir: Annotated[str, typer.Option()] = '/input',
+         output_dir: Annotated[str, typer.Option()] = '/output'):
     """
     Create a CLI with two args: `input_dir`, `output_dir`
     """
