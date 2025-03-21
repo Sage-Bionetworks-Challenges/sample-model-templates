@@ -1,9 +1,25 @@
+# R Model Example
+
 library(optparse)
 library(readr)
-library(tidyr)
+library(dplyr)
+
+predict <- function(df) {
+  #' Sample prediction function.
+  #'
+  #' TODO: Replace this with your actual model prediction logic. In this
+  #' example, random floats are assigned.
+  #'
+  #' @param df A data frame.
+  #' @return A data frame with predictions.
+
+  pred <- df %>% select(id)
+  pred$probability <- runif(nrow(pred))
+  pred
+}
 
 # Create a CLI ------------------------------------
-# Two args: `input_dir`, `output_dir`
+# Two args: `input-dir`, `output-dir`
 option_list <- list(
   make_option("--input-dir", type="character", default="/input", metavar="character"),
   make_option("--output-dir", type="character", default="/output", metavar="character")
@@ -13,12 +29,12 @@ opt <- parse_args(opt_parser)
 
 
 # Read in input file ------------------------------
-data <- read_csv(file.path(opt[["input-dir"]], "names.csv"), col_types = "c")
+data <- read_csv(file.path(opt[["input-dir"]], "data.csv"), col_types = "c")
 
 
 # Run a prediction --------------------------------
-# Full name only contains two names.
-predictions <- extract(data, name, into = c("name", "first", "last"), regex = "((.*?) (.*))")
+# Randomly generate a float between [0.0, 1.0)
+predictions <- predict(data)
 
 
 # Output predictions to output file ---------------

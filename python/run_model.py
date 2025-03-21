@@ -1,17 +1,22 @@
 """Python Model Example"""
+
 import os
 
+import numpy as np
 import pandas as pd
 import typer
 from typing_extensions import Annotated
 
 
-def predict(df):
+def predict(df: pd.DataFrame) -> pd.DataFrame:
+    """Sample prediction function.
+
+    TODO: Replace this with your actual model prediction logic. In this
+    example, random floats are assigned.
     """
-    Run a prediction: full name will only contains two names.
-    """
-    df[["first_name", "last_name"]] = df["name"].str.split(" ", n=1, expand=True)
-    return df
+    pred = df.loc[:, ["id"]]
+    pred["probability"] = np.random.random_sample(size=len(pred.index))
+    return pred
 
 
 def main(
@@ -19,11 +24,14 @@ def main(
     output_dir: Annotated[str, typer.Option()] = "/output",
 ):
     """
-    Run inference using data in input_dir and output predictions to output_dir
+    Run inference using data in input_dir and output predictions to output_dir.
     """
-    data = pd.read_csv(os.path.join(input_dir, "names.csv"))
+    data = pd.read_csv(os.path.join(input_dir, "data.csv"))
     predictions = predict(data)
-    predictions.to_csv(os.path.join(output_dir, "predictions.csv"), index=False)
+    predictions.to_csv(
+        os.path.join(output_dir, "predictions.csv"),
+        index=False,
+    )
 
 
 if __name__ == "__main__":
