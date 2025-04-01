@@ -44,18 +44,18 @@ Python are provided.
      **Python**
 
      ```
-     python run_model.py --input-dir ../sample_data/ --output-dir .
+     python python/run_model.py --input-dir sample_data/ --output-dir .
      ```
 
      **R**
 
      ```
-     Rscript run_model.R --input-dir ../sample_data/ --output-dir .
+     Rscript r/run_model.R --input-dir sample_data/ --output-dir .
      ```
 
      where:
 
-     - `../sample_data/` is used as the input directory
+     - `sample_data/` is used as the input directory
      - `.` (current working directory) is used as the output directory
 
 ### Update the Dockerfile
@@ -86,7 +86,8 @@ Python are provided.
 
 ### Build your model
 
-1. Assuming you are either in `r/` or `python/`, Dockerize your model:
+1. If you haven't already, change directories to `r/` or `python/`. Then run
+   the `build` command to Dockerize your model:
 
    ```
    docker build -t docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
@@ -94,12 +95,12 @@ Python are provided.
 
    where:
 
-   - _PROJECT_ID_: Synapse ID of your project
+   - _PROJECT_ID_: Synapse ID of your project.
    - _IMAGE_NAME_: name of your image.
    - _TAG_VERSION_: version of the image. If TAG_VERSION is not supplied,
      `latest` will be used.
    - _FILEPATH/TO/DOCKERFILE_: filepath to the Dockerfile, in this case, it
-     will be the current directory (`.`)
+     will be the current directory (`.`).
 
 2. (optional but highly recommended) Test your newly-built model by running
    it locally. For example:
@@ -115,9 +116,9 @@ Python are provided.
 
    where:
 
-   - `--rm`: removes the container after execution
+   - `--rm`: removes the container after execution.
    - `--network none`: disables all network connections to the container,
-     emulating the same behavior as the Synapse submission system
+     emulating the same behavior as the Synapse submission system.
    - `--volume SOURCE:DEST:PERMISSIONS`: mounts local directories to the container;
      use absolute paths for _SOURCE_ and _DEST_.
 
