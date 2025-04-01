@@ -29,7 +29,7 @@ opt <- parse_args(opt_parser)
 
 
 # Read in input file ------------------------------
-data <- read_csv(file.path(opt[["input-dir"]], "data.csv"), col_types = "c")
+data <- read_csv(file.path(opt[["input-dir"]], "data.csv"), show_col_types = FALSE)
 
 
 # Run a prediction --------------------------------
