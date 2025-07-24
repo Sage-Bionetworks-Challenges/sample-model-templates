@@ -127,15 +127,16 @@ Python are provided.
 
 ### Prepare and push your model to Synapse
 
-1. If you haven't already, log into the Synapse Docker registry.  We recommend
-   using a Synapse Personal Access Token (PAT) for this step rather than your
-   password:
+1. If you haven't already, log into the Synapse Docker registry with your Synapse
+   credentials:
 
    ```
    docker login docker.synapse.org --username SYNAPSE_USERNAME
    ```
 
-   Enter your PAT when prompted.
+   We highly recommend you use a Synapse Personal Access Token (PAT) when logging in.
+   Ensure that the PAT used has "Modify" permission enabled so that you can push images
+   to your Synapse project(s).
 
    > [Learn more about Synapse PATs and how to generate one].
 
@@ -148,7 +149,7 @@ Python are provided.
      docker login docker.synapse.org --username SYNAPSE_USERNAME --password-stdin
    ```
 
-2. Push the Docker image to your Synapse project:
+3. Push the Docker image to your Synapse project:
 
    ```
    docker push docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION
