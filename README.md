@@ -134,9 +134,9 @@ Python are provided.
    docker login docker.synapse.org --username SYNAPSE_USERNAME
    ```
 
-   We highly recommend you use a Synapse Personal Access Token (PAT) when logging in.
-   Ensure that the PAT used has "Modify" permission enabled so that you can push images
-   to your Synapse project(s).
+   Synapse now requires Multi-factor Authentication, so you must use a Synapse
+   Personal Access Token (PAT) at this step.  Ensure the PAT you use has "Modify"
+   permissions enabled so you can push images to your Synapse project(s).
 
    > [Learn more about Synapse PATs and how to generate one].
 
