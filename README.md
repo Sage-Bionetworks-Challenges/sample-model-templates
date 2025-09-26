@@ -102,6 +102,20 @@ Python are provided.
    - _FILEPATH/TO/DOCKERFILE_: filepath to the Dockerfile, in this case, it
      will be the current directory (`.`).
 
+> [!IMPORTANT]
+> If you are using a device with the M1/M2 chips (e.g. Apple silicon Macs), which
+> uses the `arm64` processor, you will also build a Docker image for `amd64`.
+> You can do this with either a single-platform build or multi-platform build:
+>
+> ```
+> # Single-platform build
+> docker build --platform linux/amd64 -t docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
+> 
+> # Multi-platform build
+> docker buildx build --platform=linux/amd64,linux/arm64 -t docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
+> ```
+
+
 2. (optional but highly recommended) Test your newly-built model by running
    it locally. For example:
 
