@@ -1,7 +1,7 @@
 # Define the base of your image.
 # We recommend to always specify a tag. `latest` may not 
 # always ensure reproducibility.
-FROM --platform=linux/amd64 python:3.11-slim
+FROM python:3.12-slim
 
 # For best practice, run container as non-root user.
 RUN groupadd -r user && useradd -m --no-log-init -r -g user user
