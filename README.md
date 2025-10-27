@@ -86,8 +86,13 @@ Python are provided.
 
 ### Build your model
 
-1. If you haven't already, change directories to `r/` or `python/`. Then run
-   the `build` command to Dockerize your model:
+0. If needed, open the terminal and switch directories into the folder that
+   contains your Dockerfile (either `r/` or `python/` from the template).
+
+1. Use the `docker build` command to create your image.
+  
+   For the Synapse Docker Registry, image names must start with `docker.synapse.org/`
+   followed by the project you want to push it to, then the name you want to give it:
 
    ```
    docker build --tag docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
@@ -95,17 +100,24 @@ Python are provided.
 
    where:
 
-   - _PROJECT_ID_: Synapse ID of your project.
-   - _IMAGE_NAME_: name of your image.
-   - _TAG_VERSION_: version of the image. If TAG_VERSION is not supplied,
-     `latest` will be used.
-   - _FILEPATH/TO/DOCKERFILE_: filepath to the Dockerfile, in this case, it
-     will be the current directory (`.`).
+   Command Part | Description | Example
+   --|--|--
+   `PROJECT_ID` | synID of a Synapse project to push image, in this case, it should be your project | `syn1234567`
+   `IMAGE_NAME` | name you choose for your model image | `my_model`
+   `TAG_VERSION` | version of the image you are building; if omitted, `latest` is used | `v1.0.0`
+   `FILEPATH/TO/DOCKERFILE` | relative path to the Dockerfile you are using to build the image | `.`
+
+   For example, if your Synapse project synID is `syn1234567` and the Dockerfile is in the current
+   directory (`.`), the command would be:
+
+   ```
+   docker build --tag docker.synapse.org/syn1234567/my_model:v1.0 .
+   ```
 
 > [!IMPORTANT]
-> If you are using a device with the M1/M2 chips (e.g. Apple silicon Macs), which
-> uses the `arm64` processor, you will need to build a Docker image for `amd64`.
-> You can do this with either a single-platform build or multi-platform build:
+> If you are building on a device with the M1/M2 chips (e.g. Apple silicon Macs), which
+> uses the `arm64` processor, you will also need to build a Docker image for `amd64`.
+> You can do this with either a single-platform or multi-platform build:
 >
 > ```
 > # Single-platform build
@@ -113,15 +125,38 @@ Python are provided.
 >   --platform linux/amd64 \
 >   --tag docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
 > 
-> # Multi-platform build
+> # Multi-platform build (recommended if you share the image with other M1/M2 users)
 > docker buildx build \
 >   --platform=linux/amd64,linux/arm64 \
 >   --tag docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
 > ```
 
 
-2. (optional but highly recommended) Test your newly-built model by running
-   it locally. For example:
+2. (optional but **strongly recommended**) Test your newly-built model locally using
+   sample data (such as the training data) to ensure it runs correctly and meets the
+   performance constraints. For example:
+
+   ```
+   docker run \
+       --rm \
+       --network none \
+       --volume SOURCE:DEST:PERMISSIONS [--volume ...] \
+       --memory SIZE --memory-swap SIZE --shm-size SIZE \
+       docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION
+   ```
+
+   where:
+   
+   Command Part | Description | Notes
+   --|--|--
+   `--rm` | Removes the container after execution | You can omit this if you need to check the logs or inspect the container post-run
+   `--network none` | Disables all network connections to the container | Required for accurate testing, as it mimics the evaluation system for Synapse
+   `--volume SOURCE:DEST:PERMISSIONS` | Mounts local directories to the container with read-only (`ro`) or read-write (`rw`) permissions | Use absolute paths for `SOURCE` and `DEST`
+   `--memory SIZE` | Sets the primary RAM limit; unit can be `b`, `k`, `m`, or `g` | Adjust this to match the challenge constraints. Synapse defaults to `16g` if none provided.
+   `--memory-swap SIZE` | Sets the the total memory (RAM + swap) limit; unit can be `b`, `k`, `m`, or `g` | Adjust this to match the constraints. Synapse defaults to `16g` (indicating no swap access) if none provided
+   `--shm-size SIZE` | Sets the size of the shared memory (`/dev/shm`) | Adjust this to match the challenge constraints. Default is `64m` if none provided.
+
+    For example:
 
    ```
    docker run \
@@ -129,19 +164,12 @@ Python are provided.
        --network none \
        --volume $PWD/sample_data:/input:ro \
        --volume $PWD/output:/output:rw \
-       docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION
+       --memory 4g --memory-swap 6g --shm-size 1g \
+       docker.synapse.org/syn1234567/my_model:v1.0
    ```
 
-   where:
-
-   - `--rm`: removes the container after execution.
-   - `--network none`: disables all network connections to the container,
-     emulating the same behavior as the Synapse submission system.
-   - `--volume SOURCE:DEST:PERMISSIONS`: mounts local directories to the container;
-     use absolute paths for _SOURCE_ and _DEST_.
-
-   If your model requires a GPU, add `--runtime nvidia` or `--gpus all`. Ensure
-   the [NVIDIA Container Toolkit] is installed if using GPU support.
+    If your model requires a GPU, add `--runtime nvidia` or `--gpus all`. Ensure
+    the [NVIDIA Container Toolkit] is installed if using GPU support.
 
 ### Prepare and push your model to Synapse
 
