@@ -90,7 +90,7 @@ Python are provided.
    the `build` command to Dockerize your model:
 
    ```
-   docker build -t docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
+   docker build --tag docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
    ```
 
    where:
@@ -104,19 +104,19 @@ Python are provided.
 
 > [!IMPORTANT]
 > If you are using a device with the M1/M2 chips (e.g. Apple silicon Macs), which
-> uses the `arm64` processor, you will also build a Docker image for `amd64`.
+> uses the `arm64` processor, you will need to build a Docker image for `amd64`.
 > You can do this with either a single-platform build or multi-platform build:
 >
 > ```
 > # Single-platform build
 > docker build \
 >   --platform linux/amd64 \
->   -t docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
+>   --tag docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
 > 
 > # Multi-platform build
 > docker buildx build \
 >   --platform=linux/amd64,linux/arm64 \
->   -t docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
+>   --tag docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
 > ```
 
 
@@ -153,7 +153,7 @@ Python are provided.
    ```
 
    Synapse now requires Multi-factor Authentication, so you must use a Synapse
-   Personal Access Token (PAT) at this step.  Ensure the PAT you use has "Modify"
+   Personal Access Token (PAT) at this step.  The PAT you use has "Modify"
    permissions enabled so you can push images to your Synapse project(s).
 
    > [Learn more about Synapse PATs and how to generate one].
@@ -175,6 +175,12 @@ Python are provided.
 
    The Docker image will be available in the **Docker** tab of your Synapse
    project.
+
+> [!NOTE]
+> If you receive an error, double-check that you are
+> * a Certified User;
+> * pushing to YOUR Synapse project (not the challenge's); and
+> * using a Synapse PAT with "Modify" permissions
 
 [Docker]: https://docs.docker.com/get-docker/
 [Synapse account]: https://www.synapse.org/#
