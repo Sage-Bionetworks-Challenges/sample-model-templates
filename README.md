@@ -121,7 +121,7 @@ Python are provided.
 >
 > ```
 > # Single-platform build
-> docker build \
+> docker buildx build \
 >   --platform linux/amd64 \
 >   --tag docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION FILEPATH/TO/DOCKERFILE
 > 
