@@ -11,10 +11,7 @@ Python are provided.
 
 ### Requirements
 
-- Python or R
-- [Docker](https://docs.docker.com/get-docker/)
-- [Synapse account](https://www.synapse.org/#)
-- Synapse project for the challenge
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) (Python only)
 
 ---
 
