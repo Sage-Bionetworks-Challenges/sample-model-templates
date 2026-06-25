@@ -1,0 +1,5 @@
+# Local environment config — do not commit personal values
+.env
+
+# Model output from local test runs
+output/
