@@ -18,6 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Create output directory
+        run: mkdir -m 777 -p ${{ github.workspace }}/output
+
       - name: Build image
         run: docker compose build
 
