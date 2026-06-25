@@ -1,0 +1,28 @@
+name: Smoke test
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKERFILE_FOLDER: python
+      IMAGE: model-test:latest
+      INPUT_DIR: ${{ github.workspace }}/sample_data
+      OUTPUT_DIR: ${{ github.workspace }}/output
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker compose build
+
+      - name: Run model
+        run: docker compose run --rm model
+
+      - name: Validate output
+        run: test -f output/predictions.csv
