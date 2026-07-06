@@ -93,23 +93,24 @@ docker compose build
 docker compose run --rm model
 ```
 
-**Multi-platform builds**
-
-`docker compose build` targets the `linux/amd64` platform by default. If you are using
-a newer Mac (2020 or later), your machine natively runs on `arm64`. To ensure your image
-can run locally for testing and on the evaluation infrastructure, use `docker buildx build`
-to cross-compile for both platforms:
-
-```sh
-# Load .env variables into your terminal session
-export $(cat .env | xargs)
-
-# Execute the multi-architecture build
-docker buildx build \
-  --platform=linux/amd64,linux/arm64 \
-  --tag $IMAGE \
-  $DOCKERFILE_FOLDER/
-```
+> [!IMPORTANT]
+> **IF YOU ARE USING A NEWER MAC (2020 or later)**
+> 
+> `docker compose build` targets the `linux/amd64` platform by default. If you are using
+> a newer Mac (2020 or later), your machine natively runs on `arm64`. To ensure your image
+> can run locally for testing and on the evaluation infrastructure, use `docker buildx build`
+> to cross-compile for both platforms:
+> 
+> ```sh
+> # Load .env variables into your terminal session
+> export $(cat .env | xargs)
+> 
+> # Execute the multi-architecture build
+> docker buildx build \
+>   --platform=linux/amd64,linux/arm64 \
+>   --tag $IMAGE \
+>   $DOCKERFILE_FOLDER/
+> ```
 
 #### 5. Push your model to Synapse
 
@@ -147,9 +148,9 @@ If `docker compose push` fails, double-check that you are:
 
 ---
 
-### Manual steps (without Docker Compose)
+### Build Your Model
 
-If you prefer to use the Docker commands instead of Compose:
+If you prefer to directly use the `docker` commands instead of `docker compose`:
 
 ```sh
 # Login to the Synapse Docker registry.
@@ -167,7 +168,7 @@ docker run \
   --network none \
   --volume $PWD/sample_data:/input:ro \
   --volume $PWD/output:/output:rw \
-  --memory 4g --memory-swap 6g --shm-size 1g \
+  --memory 4g --memory-swap 5g --shm-size 1g \
   docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION
 
 # Push to Synapse
@@ -181,8 +182,8 @@ where:
 | `--rm` | Remove the container after it exits |
 | `--network none` | Disable networking (mimics Synapse evaluation environment) |
 | `--volume SOURCE:DEST:ro\|rw` | Mount a local directory into the container |
-| `--memory` | RAM limit (e.g. `4g`). Synapse default: `16g` |
-| `--memory-swap` | Total RAM + swap limit. Synapse default: `16g` (no swap) |
+| `--memory` | RAM limit. Synapse default: `2g`  |
+| `--memory-swap` | Total RAM + swap limit. Synapse default: `2g` (no swap) |
 | `--shm-size` | Shared memory size. Default: `64m` |
 
 If your model requires a GPU, add `--runtime nvidia` or `--gpus all`. Ensure the 
