@@ -16,21 +16,27 @@ this template or use it as a reference to build your model from scratch.
   [Compose install guide])
 - Synapse project for the challenge
 
----
-
-### TL;DR - Quickstart
+## TL;DR (Quickstart)
 
 ```sh
+git clone https://github.com/Sage-Bionetworks-Challenges/sample-model-templates.git
+cd sample-model-templates
+
+# Update with your config values
 cp .env.example .env
-open .env                      # update with your config values
-docker compose build           # build and tag the image
-docker compose run --rm model  # test locally against sample_data/
-docker compose push            # push to the Synapse Docker registry
+open .env
+
+# Build the image
+docker compose build
+
+# Test locally (using sample_data)
+docker compose run --rm model
+
+# Push to Synapse
+docker compose push
 ```
 
----
-
-### Step-by-step guide
+## Step-by-step guide
 
 #### 1. Write your algorithm
 
@@ -57,10 +63,9 @@ docker compose push            # push to the Synapse Docker registry
 - All dependencies must be installed at build time — network access is
   disabled when your submissions are evaluated
 - Use one `COPY` instruction per file to maximize Docker's layer cache
+  > → [Learn more about Docker's build cache].
 - If needed, swap the base image for another [Trusted Content image] such as
   `bitnami/pytorch`, `r-base`, or `rocker/tidyverse`
-
-  > → [Learn more about Docker's build cache].
 
 #### 3. Configure `.env`
 
@@ -75,7 +80,7 @@ Key variables:
 | Variable | Description | Example |
 |---|---|---|
 | `DOCKERFILE_FOLDER` | Subfolder with the Dockerfile (`python` or `r`) | `python` |
-| `IMAGE` | Full image name to build and push.<br/><br/>If pushing to Synapse, image names must start with `docker.synapse.org/` followed by the project ID you want to push it to, then the name you want to give the image. | `docker.synapse.org/syn1234567/my_model:v1.0` |
+| `IMAGE` | Full image name to build and push. A tag version (`:TAG`) isn't required but recommended.<br/><br/>If pushing to Synapse, image names must start with `docker.synapse.org/` followed by the project ID you want to push it to, then the name you want to give the image. | `docker.synapse.org/syn1234567/my_model:v1.0` |
 | `INPUT_DIR` | Absolute path to local input data folder | `$PWD/sample_data` |
 | `OUTPUT_DIR` | Absolute path for generated prediction(s) | `$PWD/output` |
 
@@ -86,7 +91,7 @@ specified in the challenge.
 #### 4. Build and test
 
 ```sh
-# Build the model image
+# Build the image
 docker compose build
 
 # Run your model against the input data (defined by INPUT_DIR in .env)
@@ -121,7 +126,7 @@ needed one time.
 docker login docker.synapse.org --username SYNAPSE_USERNAME
 ```
 
-Because Synapse now requires multi-factor authentication, you must use a Synapse Personal
+Because Synapse requires multi-factor authentication, you must use a Synapse Personal
 Access Token (PAT) with "Modify" permissions enabled when prompted for a password.
 
 > → [Learn more about Synapse PATs and how to generate one].
@@ -148,15 +153,15 @@ If `docker compose push` fails, double-check that you are:
 
 ---
 
-### Build Your Model
+## Build Your Model
 
-If you prefer to directly use the `docker` commands instead of `docker compose`:
+If you prefer to directly use Docker instead of `docker compose`:
 
 ```sh
-# Login to the Synapse Docker registry.
+# Login to the Synapse Docker registry
 docker login docker.synapse.org --username SYNAPSE_USERNAME
 
-# Build the image (for two architectures)
+# Build the image (for multi-platforms)
 docker buildx build \
   --platform=linux/amd64,linux/arm64 \
   --tag docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION \
