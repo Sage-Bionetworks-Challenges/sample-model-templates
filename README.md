@@ -152,10 +152,14 @@ If `docker compose push` fails, double-check that you are:
 If you prefer to use the Docker commands instead of Compose:
 
 ```sh
-# Build the image
-docker build \
+# Login to the Synapse Docker registry.
+docker login docker.synapse.org --username SYNAPSE_USERNAME
+
+# Build the image (for two architectures)
+docker buildx build \
+  --platform=linux/amd64,linux/arm64 \
   --tag docker.synapse.org/PROJECT_ID/IMAGE_NAME:TAG_VERSION \
-  python/   # or r/
+  FILE/PATH/TO/DOCKERFILE
 
 # Test locally
 docker run \
