@@ -1,35 +1,30 @@
 # Define the base of your image.
-# We recommend to always specify a tag. `latest` may not 
-# always ensure reproducibility.
-FROM python:3.12-slim
+# Always specify a tag; `latest` is not guaranteed to be reproducible.
+FROM python:3.12-slim AS builder
 
 # Install uv for fast, reliable Python package management.
 # https://docs.astral.sh/uv/guides/integration/docker/
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.5.21 /uv /uvx /bin/
 
-# For best practice, run container as non-root user.
-RUN groupadd -r user && useradd -m --no-log-init -r -g user user
-USER user
+# Use copy semantics for uv's cache, since it may live on a different filesystem.
+ENV UV_LINK_MODE=copy
 
-# Set the working directory for the COPY, RUN, and ENTRYPOINT
-# commands of the Dockerfile.
-WORKDIR /home/user
+WORKDIR /app
 
-# Copy files over to the image.
-# We recommend copying over each file individually, as to take
-# advantage of cache building (which helps reduce build time).
-COPY --chown=user:user pyproject.toml .
+# Install dependencies before copying your code to maximize build cache reuse.
+# No network access at runtime, so all dependencies must be installed here.
+# Run `uv lock` locally to generate/update uv.lock before building.
+COPY pyproject.toml uv.lock .
+RUN uv sync --frozen --no-dev --no-cache
 
-# Install needed libraries/packages.
-# Your model will be run without network access, so the dependencies
-# must be installed here (and not during code execution).
+# Final image: only the app and its dependencies, without build tools like uv.
+FROM python:3.12-slim
+WORKDIR /app
+COPY --from=builder /app/.venv .venv
 
-# Tip: run `uv lock` locally to generate a uv.lock file, then copy it
-# here alongside pyproject.toml and add --frozen for reproducible builds.
-RUN uv sync --no-dev --no-cache
-
-COPY --chown=user:user run_model.py .
+# Copy each file individually to take advantage of Docker's layer cache.
+COPY run_model.py .
 
 # Set the main command of the image.
-# We recommend using this form instead of `ENTRYPOINT command param1`.
-ENTRYPOINT ["uv", "run", "python", "run_model.py"]
+# Use exec form so signals (e.g. timeouts) reach the process directly.
+ENTRYPOINT [".venv/bin/python", "run_model.py"]
